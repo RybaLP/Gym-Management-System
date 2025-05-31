@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/gym-management-system/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/gym-management-system/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/gym-management-system",
+  "projects": {
+    "booking-service": {
+      "type": "application",
+      "root": "apps/booking-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/booking-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/booking-service/tsconfig.app.json"
+      }
+    },
+    "client-service": {
+      "type": "application",
+      "root": "apps/client-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/client-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/client-service/tsconfig.app.json"
+      }
+    },
+    "gym-management-system": {
+      "type": "application",
+      "root": "apps/gym-management-system",
+      "entryFile": "main",
+      "sourceRoot": "apps/gym-management-system/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gym-management-system/tsconfig.app.json"
+      }
+    },
+    "membership-service": {
+      "type": "application",
+      "root": "apps/membership-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/membership-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/membership-service/tsconfig.app.json"
+      }
+    }
+  }
+}
