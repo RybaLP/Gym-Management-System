@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Membership } from '../entities/membership.entity';
 import { CreateMembershipDto } from '../dtos/membership.dto';
-import { UpdateMebershipDto } from '../dtos/updateMembership.dto';
+import { UpdateMembershipDto } from '../dtos/updateMembership.dto';
 
 @Injectable()
 export class MembershipProvider {
@@ -77,7 +77,7 @@ export class MembershipProvider {
         }
     }
 
-    public updateMembership = async (id : number , updateMembershipDto : UpdateMebershipDto) : Promise<Membership | null> => {
+    public updateMembership = async (id : number , updateMembershipDto : UpdateMembershipDto) : Promise<Membership | null> => {
         const membership = await this.membershipRepository.findOneBy([{id}, {
             isActive : true
         }])
@@ -108,6 +108,20 @@ export class MembershipProvider {
 
         } catch (error) {
             throw new Error('Could not update membership!');
+        }
+    }
+
+
+    public deleteMembership = async (id : number) : Promise<void> => {
+        const membership = await this.membershipRepository.findOneBy({id})
+        if(!membership){
+            throw new Error(`Membership with ${id} id does not exist in database`)
+        }
+        try {
+            await this.membershipRepository.delete(membership);
+            return;
+        } catch (error) {
+            throw new Error("could not delete membership from database")
         }
     }
 }

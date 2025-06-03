@@ -19,4 +19,5 @@ export class Membership{
 
     @Column({default : true})
     isActive : boolean
+
 }
