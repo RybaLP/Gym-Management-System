@@ -1,17 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { UserRole } from "../enums/userRole.dto";
+import { UUID } from "crypto";
 
 @Entity('client')
 export class Client {
-    @PrimaryGeneratedColumn()
-    id : number
 
-    @Column(
-        {unique : true, length : 30}
-    )
-    login : string
-
-    @Column()
-    password : string
+    @PrimaryGeneratedColumn('uuid')
+    id : string
 
     @Column({unique : true})
     email : string

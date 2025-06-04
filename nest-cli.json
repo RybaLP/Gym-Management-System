@@ -10,6 +10,15 @@
   "monorepo": true,
   "root": "apps/client-service",
   "projects": {
+    "auth-service": {
+      "type": "application",
+      "root": "apps/auth-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth-service/tsconfig.app.json"
+      }
+    },
     "booking-service": {
       "type": "application",
       "root": "apps/booking-service",
@@ -28,7 +37,6 @@
         "tsConfigPath": "apps/client-service/tsconfig.app.json"
       }
     },
-   
     "membership-service": {
       "type": "application",
       "root": "apps/membership-service",

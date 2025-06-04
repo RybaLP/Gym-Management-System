@@ -1,0 +1,1 @@
+export const registerUrl = "http://localhost:3000/client";
