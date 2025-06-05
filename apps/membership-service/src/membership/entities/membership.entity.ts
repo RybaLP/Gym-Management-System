@@ -1,23 +1,30 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { MembershipType } from "../enums/membership.enum";
+
 
 @Entity('memberships')
 export class Membership{
-    @PrimaryGeneratedColumn()
-    id : number
+    @PrimaryGeneratedColumn('uuid')
+    id : string
 
-    @Column({unique : true, length : 100})
-    name : string
+    @Column({ type: 'uuid', nullable: false, unique: true }) 
+    clientId: string; 
 
-    @Column({type : 'text', nullable : true})
-    description : string
+    @Column({ type: 'timestamp with time zone', nullable: false })
+    startDate: Date;
 
-    @Column({ type: 'decimal', precision: 10, scale: 2 }) 
-    price: number;
+    @Column({ type: 'timestamp with time zone', nullable: false })
+    endDate: Date;
 
-    @Column({default : 0 })
-    durationDays : number;
+    @Column({ type: 'boolean', default: true })
+    isActive: boolean;
 
-    @Column({default : true})
-    isActive : boolean
+    @Column({type : 'enum', nullable : false , default : MembershipType.STANDARD})
+    type: MembershipType;
+s
+    @CreateDateColumn({ type: 'timestamp with time zone' })
+    createdAt: Date;
 
+    @UpdateDateColumn({ type: 'timestamp with time zone' })
+    updatedAt: Date;
 }

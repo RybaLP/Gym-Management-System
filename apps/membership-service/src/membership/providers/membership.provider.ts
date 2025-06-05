@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Membership } from '../entities/membership.entity';
-import { CreateMembershipDto } from '../dtos/membership.dto';
+import { CreateMembershipDto } from '../dtos/createMembership.dto';
 import { UpdateMembershipDto } from '../dtos/updateMembership.dto';
 
 @Injectable()
@@ -13,115 +13,55 @@ export class MembershipProvider {
     ){}
 
     public createMembership = async (createMembershipDto : CreateMembershipDto) : Promise<Membership> => {
-        const exisintMembership = await this.membershipRepository.findOne({
-            where : {
-                name : createMembershipDto.name
-            }
-        })
-
-        if(exisintMembership) {
-            throw new Error(`Membership with name ${createMembershipDto.name} already exists!`);
-        }
-
-        try {
-            const newMembership = await this.membershipRepository.create({...createMembershipDto});
-            await this.membershipRepository.save(newMembership);
-            return newMembership
-        } catch (error) {
-            throw new Error("Could not create membership")
-        }
-    }
-
-    public findAllMemberships = async () : Promise<Membership[]> => {
-        try {
-            return await this.membershipRepository.find({
-                where : {isActive : true}
-            });
-        } catch (error) {
-            throw new Error("Could not find any memberships!");
-        }
-    }
-
-    public findMembershipById = async (id : number) : Promise<Membership> => {
-        const membership = await this.membershipRepository.findOneBy([
-            {id},
-            {isActive : true}
-        ])
-
-        if(!membership){
-            throw new Error("");
-        }
-
-        try {
-            return membership;
-        } catch (error) {
-            throw new Error(`Could not retrun membership with id : ${id}`)
-        }
-    }
-
-    public softDeleteMembership = async (id : number) : Promise<void> => {
-        const membership = await this.membershipRepository.findOneBy({id})
         
-        if(!membership){
-            throw new Error(`Could not find member ship with ${id} id`);
+        const { clientId, type } = createMembershipDto;
+        const existingActiveMembership = await this.membershipRepository
+            .createQueryBuilder("membership")
+            .where("membership.clientId = :clientId", { clientId })
+            .andWhere("membership.isActive = :isActive", { isActive: true })
+            .andWhere("membership.endDate > :now", { now: new Date() })
+            .getOne();
+
+        if (existingActiveMembership) {
+            throw new ConflictException(`Client with ID ${clientId}.`);
         }
 
-        if(!membership.isActive){
-            throw new Error(`Membership with ID ${id} is already inactive`);
-        }
+        const startDate = new Date();
+        const endDate = new Date();
 
+        endDate.setDate(startDate.getDate() + 30);
+      
         try {
-            await this.membershipRepository.update(id, {isActive : false})
-        } catch (error) {
-            throw new Error("Cout not set membership to inactive!");
-        }
-    }
-
-    public updateMembership = async (id : number , updateMembershipDto : UpdateMembershipDto) : Promise<Membership | null> => {
-        const membership = await this.membershipRepository.findOneBy([{id}, {
-            isActive : true
-        }])
-
-        if(!membership){
-            throw new Error(`Membership with ID ${id} does not exist or is not active.`);
-        }
-
-        /// prevents from duplicate of the same record
-        if (updateMembershipDto.name && updateMembershipDto.name !== membership.name) {
-            const existingWithName = await this.membershipRepository.findOne({
-                where: { name: updateMembershipDto.name, isActive: true },
+            const newMembership = this.membershipRepository.create({
+                clientId,
+                type,
+                startDate,
+                endDate, 
+                isActive: true, 
             });
-            if (existingWithName) {
-                throw new Error(`Membership with name "${updateMembershipDto.name}" already exists.`);
-            }
-        }
 
-        try {
-            const updateResult = await this.membershipRepository.update(id, updateMembershipDto);
-            
-            if(updateResult.affected === 0){
-                return membership;
-            }
-
-            const updatedMembership = await this.membershipRepository.findOneBy({id});
-            return updatedMembership;
+            await this.membershipRepository.save(newMembership);
+            return newMembership;
 
         } catch (error) {
-            throw new Error('Could not update membership!');
+             console.error("Error creating membership:", error);
+             throw new InternalServerErrorException("Could not create membership");
         }
     }
 
+    public getActiveMembershipByUserId = async (userId: string): Promise<Membership | null> => {
+        const membership = await this.membershipRepository.findOne({
+        where: { clientId: userId, isActive: true },
+        });
 
-    public deleteMembership = async (id : number) : Promise<void> => {
-        const membership = await this.membershipRepository.findOneBy({id})
-        if(!membership){
-            throw new Error(`Membership with ${id} id does not exist in database`)
+        if (membership && membership.endDate < new Date()) {
+        membership.isActive = false;
+        await this.membershipRepository.save(membership);
+        return null;
         }
-        try {
-            await this.membershipRepository.delete(membership);
-            return;
-        } catch (error) {
-            throw new Error("could not delete membership from database")
-        }
-    }
+
+        return membership;
+    };
+
+    
 }

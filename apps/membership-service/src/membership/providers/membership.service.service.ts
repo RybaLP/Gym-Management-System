@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMembershipDto } from '../dtos/membership.dto';
+import { CreateMembershipDto } from '../dtos/createMembership.dto';
 import { MembershipProvider } from './membership.provider';
 import { UpdateMembershipDto } from '../dtos/updateMembership.dto';
 
@@ -9,27 +9,12 @@ export class MembershipService {
         private readonly membershipProvider : MembershipProvider
     ){}
 
-    public findAllMemberships = async () => {
-        return await this.membershipProvider.findAllMemberships();
+    public createMembership(createMembershipDto : CreateMembershipDto){
+        return this.membershipProvider.createMembership(createMembershipDto);
     }
 
-    public findMembershipById = async (id : number) => {
-        return await this.membershipProvider.findMembershipById(id)
+    public getActiveMembershipByUserId(id : string){
+        return this.membershipProvider.getActiveMembershipByUserId(id)   
     }
-
-    public createMembership = async (createMembershipDto : CreateMembershipDto) => {
-        return await this.membershipProvider.createMembership(createMembershipDto);
-    }
-
-    public updateMembership = async (id : number , updateMembershipDto : UpdateMembershipDto) => {
-        return await this.membershipProvider.updateMembership(id , updateMembershipDto)
-    }
-
-    public softDeleteMembership = async (id : number) => {
-        return await this.membershipProvider.softDeleteMembership(id)
-    }
-
-    public deleteMembership = async (id : number ) => {
-        return await this.membershipProvider.deleteMembership(id);
-    }
+   
 }
