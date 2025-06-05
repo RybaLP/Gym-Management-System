@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-
+import { HttpModule } from '@nestjs/axios';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,7 +25,8 @@ import { AuthModule } from './auth/auth.module';
          synchronize : true 
       }),
     }),
-    AuthModule
+    AuthModule,
+    HttpModule
   ],
   controllers: [AppController],
   providers: [AppService],

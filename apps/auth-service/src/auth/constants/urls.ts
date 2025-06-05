@@ -1,1 +1,1 @@
-export const registerUrl = "http://localhost:3000/client";
+export const registerUrl = "http://localhost:3001/client";

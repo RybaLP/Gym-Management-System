@@ -13,7 +13,7 @@ export class ClientService {
         return await this.clientProvider.findAllClients()
     }
 
-    public findClientById = async (id : number) => {
+    public findClientById = async (id : string) => {
         return await this.clientProvider.findClientById(id)
     }
 
@@ -21,11 +21,11 @@ export class ClientService {
         return await this.clientProvider.createClient(createClientDto);
     } 
     
-    public updateClient = async (id : number , updateClientDto : UpdateClientDto) => {
+    public updateClient = async (id : string , updateClientDto : UpdateClientDto) => {
         return await this.clientProvider.updateClient(id , updateClientDto)
     }
 
-    public deleteClient = async (id : number) => {
+    public deleteClient = async (id : string) => {
         return await this.clientProvider.softDeleteClient(id);
     }
 }

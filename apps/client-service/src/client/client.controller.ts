@@ -16,7 +16,7 @@ export class ClientController {
     }
 
     @Get('/:id')
-    public findClientById(@Param('id', ParseIntPipe) id : number){
+    public findClientById(@Param('id', ParseIntPipe) id : string){
         return this.clientService.findClientById(id)
     }
 
@@ -27,12 +27,12 @@ export class ClientController {
     }
 
     @Patch('/:id')
-    public editClient(@Param('id', ParseIntPipe) id : number, editClientDto : UpdateClientDto){
+    public editClient(@Param('id', ParseIntPipe) id : string, editClientDto : UpdateClientDto){
         return this.clientService.updateClient(id , editClientDto)
     }
 
     @Delete('/:id')
-    public deleteClient(@Param('id', ParseIntPipe) id : number){
+    public deleteClient(@Param('id', ParseIntPipe) id : string){
         return this.clientService.deleteClient(id)
     }
 

@@ -17,7 +17,6 @@ export class ClientProvider {
         const existingClient = await this.clientRepository.findOne({
             where : [
                 {email: createClientDto.email},
-                {login : createClientDto.login}
             ] 
         })
         if(existingClient){
@@ -38,7 +37,7 @@ export class ClientProvider {
         });
     }
 
-    public findClientById = async (id : number) : Promise<Client | undefined> => {
+    public findClientById = async (id : string) : Promise<Client | undefined> => {
 
         const client = await this.clientRepository.findOne({
             where : {id : id , isActive : true}
@@ -51,7 +50,7 @@ export class ClientProvider {
         return client;
     }
 
-    public softDeleteClient = async (id : number) : Promise<void> => {
+    public softDeleteClient = async (id : string) : Promise<void> => {
         const client = await this.clientRepository.findOne({
             where : {
                 id : id
@@ -73,7 +72,7 @@ export class ClientProvider {
         }
     }
 
-    public  updateClient = async (id: number, updateClientDto: UpdateClientDto): Promise<Client | null> => {
+    public  updateClient = async (id: string, updateClientDto: UpdateClientDto): Promise<Client | null> => {
         const client = await this.clientRepository.findOne({ where: { id: id, isActive: true }});
 
         if (!client) {
