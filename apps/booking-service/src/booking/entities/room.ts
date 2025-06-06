@@ -17,5 +17,4 @@ export class Room{
 
   @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt: Date;
-
 }

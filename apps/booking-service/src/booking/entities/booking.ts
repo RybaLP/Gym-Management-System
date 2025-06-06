@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { BookingStatus } from "../enums/bookings.enum";
+import { Room } from "./room";
 
 @Entity('bookings')
 export class Booking {
@@ -11,6 +12,13 @@ export class Booking {
 
     @Column({type : 'uuid', nullable : false})
     membershipId : string | null;
+
+    @Column({type : 'uuid', nullable : false})
+    roomId : string;
+
+    @ManyToOne(()=>Room, {onDelete : "RESTRICT"})
+    @JoinColumn({name : 'roomId'})
+    room : Room
 
     @Column({type : 'timestamp with time zone', nullable : false})
     startTime : Date;
@@ -30,5 +38,4 @@ export class Booking {
 
     @UpdateDateColumn({type : 'timestamp with time zone'})
     updatedAt : Date;
-
 }

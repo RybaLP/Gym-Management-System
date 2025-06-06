@@ -62,6 +62,4 @@ export class MembershipProvider {
 
         return membership;
     };
-
-    
 }

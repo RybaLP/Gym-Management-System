@@ -19,7 +19,7 @@ export class Membership{
     @Column({ type: 'boolean', default: true })
     isActive: boolean;
 
-    @Column({type : 'enum', nullable : false , default : MembershipType.STANDARD})
+    @Column({type : 'enum', enum : MembershipType , nullable : false , default : MembershipType.STANDARD})
     type: MembershipType;
 s
     @CreateDateColumn({ type: 'timestamp with time zone' })
