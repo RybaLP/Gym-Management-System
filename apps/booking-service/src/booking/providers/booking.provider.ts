@@ -38,10 +38,10 @@ export class BookingProvider {
 
         /// reservation time cnanot be longer than 2 hours
         const twoHoursInMilliseconds = 2 * 60 * 60 * 1000;
-        const duration = parsedEndTime.getTime() - parsedStartTime.getTime();
+        const duration = parsedEndTime.getTime() - parsedStartTime.getTime(); 
         if(duration > twoHoursInMilliseconds){
-            throw new BadRequestException("Booking duration cannot be longer than 2 hours");
-        } 
+            throw new BadRequestException("Booking duration cannot be longer than 2 hours."); 
+        }
 
         const room = await this.roomRepository.findOne({where : {id: roomId, isActive : true}});
         if(!room){
@@ -67,12 +67,12 @@ export class BookingProvider {
       
       try {
           const response = await firstValueFrom(
-             this.httpService.get(`${MembershipURL}/memberships/user/${userId}`)
+             this.httpService.get(`${MembershipURL}/membership/user/${userId}`)
           );
           activeMembership = response.data;
 
       } catch (error) {
-         if(error.response && error.response.status === 401){
+         if(error.response && error.response.status === 404){
             throw new BadRequestException("User does not have an active membership");
          }
          throw new InternalServerErrorException("Failed to verify user membership");
@@ -93,7 +93,6 @@ export class BookingProvider {
             throw new BadRequestException(`Platinum members cannot reserve ${room.name}`);
         }
       }
-
       try {
         const newBooking = this.bookingRepository.create({
         userId,

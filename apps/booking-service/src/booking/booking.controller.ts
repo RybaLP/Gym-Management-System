@@ -1,10 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CreateBookingDto } from './dtos/createBooking.dto';
-import { BookingServiceService } from './providers/booking.service.service';
+import { BookingService } from './providers/booking.service';
 
 @Controller('booking')
 export class BookingController {
-    constructor(private readonly bookingService : BookingServiceService){}
+    constructor(private readonly bookingService : BookingService){}
 
     @Post()
     public createBooking(@Body() createBookingDto : CreateBookingDto){
