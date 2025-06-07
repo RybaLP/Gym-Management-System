@@ -13,7 +13,7 @@ The Gym Management System is built around a microservices architecture, where ea
 - **NestJS**
 - **TypeORM**
 - **PostgreSQL**
-- **Axios
+- **Axios**
 ---
 
 # Getting Started
@@ -28,13 +28,17 @@ To get a copy of the project up and running on your local machine for developmen
 
 ## Installation
 
-1. **Clone the repository**:
-   ```bash
-git clone https://github.com/RybaLP/Gym-Management-System.git
-npm install
-# or
-yarn install
+```bash
+1. Clone the repository
+   git clone https://github.com/RybaLP/Gym-Management-System.git
+   cd Gym-Management-System
 
+2. Install dependencies
+   # Using npm
+   npm install
+
+   # Or using yarn
+   yarn install
 
 
 
