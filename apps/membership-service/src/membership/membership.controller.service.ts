@@ -1,11 +1,14 @@
 import { Body, ConflictException, Controller, Delete, Get, Injectable, InternalServerErrorException, NotFoundException, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { MembershipService } from './providers/membership.service.service';
 import { CreateMembershipDto } from './dtos/createMembership.dto';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('membership')
 export class MembershipController {
     constructor(private readonly membershipService : MembershipService){}
 
+   @UseGuards(AuthGuard('jwt'))
    @Get('user/:userId')
     public async getActiveMembershipByUserId(@Param('userId') userId: string) {
         try {
@@ -22,6 +25,8 @@ export class MembershipController {
         }
     }
 
+
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   public async createMembership(@Body() createMembershipDto: CreateMembershipDto) { 
     try {

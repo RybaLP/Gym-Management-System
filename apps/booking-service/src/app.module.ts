@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { BookingModule } from './booking/booking.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './booking/auth/auth.module';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
          synchronize : true 
       }),
     }),
-    BookingModule],
+    BookingModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

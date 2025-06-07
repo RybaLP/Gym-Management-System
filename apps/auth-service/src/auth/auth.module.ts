@@ -11,11 +11,16 @@ import { ConfigModule, ConfigService, ConfigType } from '@nestjs/config';
 import jwtConfig from './config/jwt.config';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthProvider } from './providers/auth.provider';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { PassportModule } from '@nestjs/passport';
+
 
 @Module({
-  providers: [AuthService, GenerateToken,BcryptProvider,{provide : HashingProvider, useClass : BcryptProvider}, AuthProvider],
+  providers: [AuthService, GenerateToken,BcryptProvider,{provide : HashingProvider, useClass : BcryptProvider}, AuthProvider, JwtStrategy],
   controllers: [AuthController],
   imports : [
+        ConfigModule,
+        PassportModule,
         TypeOrmModule.forFeature([AuthUser]),
         HttpModule, 
         ConfigModule.forFeature(jwtConfig), 
@@ -32,6 +37,6 @@ import { AuthProvider } from './providers/auth.provider';
             }),
         }),
     ],
-    exports : [AuthService]
+    exports : [AuthService, PassportModule, JwtModule]
 })
 export class AuthModule {}
