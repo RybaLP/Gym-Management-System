@@ -21,7 +21,7 @@ export class Membership{
 
     @Column({type : 'enum', enum : MembershipType , nullable : false , default : MembershipType.STANDARD})
     type: MembershipType;
-s
+
     @CreateDateColumn({ type: 'timestamp with time zone' })
     createdAt: Date;
 
