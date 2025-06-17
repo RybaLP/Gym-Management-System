@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMembershipDto } from '../dtos/createMembership.dto';
 import { MembershipProvider } from './membership.provider';
-import { UpdateMembershipDto } from '../dtos/updateMembership.dto';
 
 @Injectable()
 export class MembershipService {
@@ -16,5 +15,4 @@ export class MembershipService {
     public getActiveMembershipByUserId(id : string){
         return this.membershipProvider.getActiveMembershipByUserId(id)   
     }
-   
 }

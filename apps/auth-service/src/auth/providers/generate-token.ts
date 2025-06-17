@@ -25,14 +25,6 @@ export class GenerateToken {
 
     public async generateToken (authUser : AuthUser) : Promise<string> {
 
-        // let accessToken;
-        // try {
-        //     accessToken = this.signToken<Partial<ActiveUserData>>(authUser.id, this.jwtConfiguraion.accessTokenTtl,{email : authUser.email})
-        // } catch (error) {
-        //     throw new Error("")            
-        // }
-        // return accessToken;
-
         return await this.signToken<Pick<AuthUser, 'email' | 'role'>>(
             authUser.id,
             this.jwtConfiguraion.accessTokenTtl,

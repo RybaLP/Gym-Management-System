@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthUser } from '../entities/auth-user.entity';
@@ -16,6 +16,9 @@ import { InternalServerErrorException } from '@nestjs/common';
 
 @Injectable()
 export class AuthProvider {
+
+    private readonly logger = new Logger(AuthProvider.name);
+
     constructor(
         @InjectRepository(AuthUser)
         private readonly authUserRepository : Repository<AuthUser>,
@@ -85,6 +88,12 @@ export class AuthProvider {
                 throw error; 
             }
 
+            if (error.message === 'Token generation failed!') {
+                throw new InternalServerErrorException('Could not generate access token ! ');
+            }
+
+            this.logger.error(`An unexpected error occurred during registration: ${error.message}`);
+
             throw new InternalServerErrorException('Registration failed due to an unexpected error. Please try again.');
         }
     }
@@ -104,10 +113,10 @@ export class AuthProvider {
             throw new InternalServerErrorException("Could not fetch the user. Please try again later.");
         }
         if(!existingUser){
-            throw new UnauthorizedException("Invalid credentials"); 
+            throw new UnauthorizedException("Invalid credentials");
         }
 
-        if(!existingUser.isActive){
+        if(!existingUser.isActive){ 
             throw new UnauthorizedException("Account is inactive. Please contact support")
         }
 
@@ -117,7 +126,7 @@ export class AuthProvider {
                 throw new UnauthorizedException("Invalid credentials");
              }
         } catch (error) {
-            throw new UnauthorizedException("Provided password does not match to account");
+            throw new UnauthorizedException("Invalid credentials"); 
         }
 
         const accessToken = await this.generateTokenProvider.generateToken(existingUser);

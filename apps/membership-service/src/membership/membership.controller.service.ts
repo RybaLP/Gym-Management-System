@@ -1,5 +1,5 @@
 import { Body, ConflictException, Controller, Delete, Get, Injectable, InternalServerErrorException, NotFoundException, Param, ParseIntPipe, Post } from '@nestjs/common';
-import { MembershipService } from './providers/membership.service.service';
+import { MembershipService } from './providers/membership.service';
 import { CreateMembershipDto } from './dtos/createMembership.dto';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
