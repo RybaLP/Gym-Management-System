@@ -1,6 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { UserRole } from "../enums/userRole.dto";
-import { UUID } from "crypto";
 
 @Entity('client')
 export class Client {

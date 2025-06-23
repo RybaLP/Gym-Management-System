@@ -36,7 +36,6 @@ export class BookingProvider {
             throw new BadRequestException("Booking start time cannot be in the past")
         }
 
-        /// reservation time cnanot be longer than 2 hours
         const twoHoursInMilliseconds = 2 * 60 * 60 * 1000;
         const duration = parsedEndTime.getTime() - parsedStartTime.getTime(); 
         if(duration > twoHoursInMilliseconds){
@@ -48,7 +47,6 @@ export class BookingProvider {
             throw new NotFoundException(`Room with ID ${roomId} not found or is not active`);
         }
 
-        /// checking if room is reservated or not
       const conflictingBooking = await this.bookingRepository
       .createQueryBuilder("booking")
       .where("booking.roomId = :roomId", { roomId })

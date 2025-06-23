@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MembershipController } from './membership.controller.service';
+import { MembershipController } from './membership.controller';
 import { MembershipService } from './providers/membership.service';
 import { MembershipProvider } from './providers/membership.provider';
 import { TypeOrmModule } from '@nestjs/typeorm';

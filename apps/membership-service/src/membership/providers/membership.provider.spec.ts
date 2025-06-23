@@ -1,5 +1,3 @@
-// apps/membership-service/src/membership/providers/membership.provider.spec.ts
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { MembershipProvider } from './membership.provider';
 import { getRepositoryToken } from '@nestjs/typeorm';
