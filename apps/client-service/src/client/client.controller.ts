@@ -23,7 +23,7 @@ export class ClientController {
     }
 
     @Post()
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     @HttpCode(HttpStatus.CREATED)
     public createClient(@Body() createClientDto : CreateClientDto){
         return this.clientService.createClient(createClientDto);

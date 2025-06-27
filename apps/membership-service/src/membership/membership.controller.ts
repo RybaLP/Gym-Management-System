@@ -8,7 +8,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class MembershipController {
     constructor(private readonly membershipService : MembershipService){}
 
-   @UseGuards(AuthGuard('jwt'))
+  //  @UseGuards(AuthGuard('jwt'))
    @Get('user/:userId')
     public async getActiveMembershipByUserId(@Param('userId') userId: string) {
         try {
